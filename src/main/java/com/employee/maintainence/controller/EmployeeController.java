@@ -6,6 +6,7 @@ import com.employee.maintainence.model.Employee;
 import com.employee.maintainence.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,10 @@ public class EmployeeController {
     private EmployeeFacade employeeFacade;
 
     @GetMapping("/inquiry")
-    public ResponseEntity<List<Employee>> getAllEmployees(){
+    @ResponseBody
+    public List<Employee> getAllEmployees() throws EmployeeNotFoundException{
 
-        List<Employee> empList = employeeFacade.getAllEmployyes();
-
-        return ResponseEntity.ok(empList);
+        return employeeFacade.getAllEmployyes();
 
     }
 
@@ -50,11 +50,9 @@ public class EmployeeController {
 
 
     @GetMapping("/salaryInquiry")
-    public ResponseEntity<BigDecimal> getMaxSalary(){
+    public BigDecimal getMaxSalary(){
 
-        BigDecimal maxSalary = employeeFacade.getMaxSalary();
-
-        return ResponseEntity.ok(maxSalary);
+        return employeeFacade.getMaxSalary();
 
     }
 
@@ -72,20 +70,24 @@ public class EmployeeController {
 
     }
 
-    @PutMapping("update/{empId}")
-    public ResponseEntity<String> updateDeptId(@PathVariable("empId") Integer id) throws Exception{
+    @PutMapping("update/{empId}/{deptId}")
+    public ResponseEntity<String> updateDeptId(@PathVariable("empId") Integer id, @PathVariable("deptId") BigDecimal deptId) throws EmployeeNotFoundException{
 
         Optional<Employee> employeeOptional = employeeFacade.findById(id);
 
         if(employeeOptional.isPresent()){
-
+            Employee emp = employeeOptional.get();
+            emp.setDepartmentId(deptId);
+            employeeFacade.updateRecord(emp);
+            return ResponseEntity.ok("Record Updated for "+id+" with new dept "+deptId);
 
         }else{
 
+            return ResponseEntity.notFound().build();
 
         }
 
-        return null;
+
     }
 
 }

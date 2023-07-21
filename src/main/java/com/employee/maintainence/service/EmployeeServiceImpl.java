@@ -26,6 +26,13 @@ private EmployeeRepository employeeRepository;
     }
 
     @Override
+    public void updateRecord(Employee emp) {
+
+        employeeRepository.save(emp);
+
+    }
+
+    @Override
     public BigDecimal getMaxSalary() {
 
         return employeeRepository.findMaxSalary();

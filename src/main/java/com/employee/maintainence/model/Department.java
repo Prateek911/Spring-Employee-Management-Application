@@ -14,8 +14,8 @@ public class Department {
     private Integer id;
 
     @Column(name="department_name")
-    private Integer deptName;
+    private String deptName;
 
     @Column(name="department_code")
-    private Integer deptCode;
+    private String deptCode;
 }

@@ -40,6 +40,12 @@ public class EmployeeFacade {
 
    }
 
+   public void updateRecord(Employee emp){
+
+      employeeService.updateRecord(emp);
+
+   }
+
 
 
 }

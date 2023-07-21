@@ -11,7 +11,8 @@ public interface EmployeeService {
 
  List<Employee> getEmpData();
 
- @Query("select MAX(e.salary) from Employee e")
+ void updateRecord(Employee emp);
+
  BigDecimal getMaxSalary();
 
  void deleteById(Integer empId);
